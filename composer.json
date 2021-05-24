@@ -1,0 +1,13 @@
+{
+    "name": "qh4-module/rabc_single",
+    "description": "权限管理模块简单版",
+    "authors": [
+        {
+            "name": "hyunsu",
+            "email": "hyunsu@foxmail.com"
+        }
+    ],
+    "require": {},
+    "license": "MIT",
+    "minimum-stability": "dev"
+}
