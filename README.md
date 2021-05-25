@@ -3,7 +3,7 @@ QH4框架扩展模块-权限管理模块-简单版本
 ### 依赖
 该模块依赖于城市模块,主要是将 user_info 表的 `city_id` 字段进行转换,不需要这个功能可以删除对应行 (models/user/detail 的54,59,65行)
 ```php
-composer require qh4module/city
+composer require qh4-module/city
 ```
 
 ### 关于解析YML文件
@@ -21,7 +21,7 @@ pecl install ymal
 yml文件必须放在 `libs` 目录下，名称为 `privilege.yml`
 
 
-#### 功能
+### 功能
 这个是简单版本的权限管理模块,只有3层模型,包括用户、角色、权限。
 
 对应的有高级版本，有4层模型，包括用户、角色、权限、部门。
@@ -54,16 +54,6 @@ yml文件必须放在 `libs` 目录下，名称为 `privilege.yml`
  * @return array|mixed
  */
 public function actionParseYml()
-{
-    if (!ENV_DEV) {
-        \QTTX::$response->setStatusCode(404);
-        return false;
-    }
-
-    $model = new ParsePrivilegeYml();
-
-    return $this->runModel($model);
-}
 ```
 
 ```php
@@ -72,13 +62,6 @@ public function actionParseYml()
  * @return array
  */
 public function actionMainMenu()
-{
-    $model = new MainMenu([
-        'external' => $this->ext_rabc_single(),
-    ]);
-
-    return $this->runModel($model);
-}
 ```
 
 ```php
@@ -86,13 +69,6 @@ public function actionMainMenu()
  * 获取用户所有权限的key,前端主要依赖这些值判定权限
  */
 public function actionPrivilegeKeys()
-{
-    $model = new PrivilegeKeys([
-        'external' => $this->ext_rabc_single(),
-    ]);
-
-    return $this->runModel($model);
-}
 ```
 
 ```php
@@ -336,14 +312,4 @@ public static function getRoleAllChildren($role_id, $map = false, ExtRabcSingle 
  * @return array
  */
 public static function getUserRelatedPrivKeys($user_id = null, ExtRabcSingle $external = null, $db = null)
-{
-    if (empty($user_id)) $user_id = TokenFilter::getPayload('user_id');
-    if (is_null($external)) $external = new ExtRabcSingle();
-    if (is_null($db)) $db = $external->getDb();
-    $role_ids = self::getUserRelatedRoles($user_id, false, $external, $db);
-    if (empty($role_ids)) return [];
-    $result = self::getRoleRelatedPrivileges($role_ids, ['key_path' => null,], $external, $db);
-    if (empty($result)) return [];
-    return array_column($result, 'key_path');
-}
 ```
