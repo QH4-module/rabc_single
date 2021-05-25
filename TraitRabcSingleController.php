@@ -22,6 +22,9 @@ use qh4module\rabc_single\models\privilege\Create as PrivCreate;
 use qh4module\rabc_single\models\privilege\Delete as PrivDelete;
 use qh4module\rabc_single\models\privilege\Detail as PrivDetail;
 use qh4module\rabc_single\models\privilege\Index as PrivIndex;
+use qh4module\rabc_single\models\privilege\MainMenu;
+use qh4module\rabc_single\models\privilege\ParsePrivilegeYml;
+use qh4module\rabc_single\models\privilege\PrivilegeKeys;
 use qh4module\rabc_single\models\privilege\Update as PrivUpdate;
 use qh4module\rabc_single\models\role\CascaderData as RoleCascaderData;
 use qh4module\rabc_single\models\role\Create as RoleCreate;
@@ -44,6 +47,49 @@ trait TraitRabcSingleController
     {
         return new ExtRabcSingle();
     }
+
+    /**
+     * 解析权限 yml 文件
+     * 文件需要放在 lib 目录下
+     * @return array|mixed
+     */
+    public function actionParseYml()
+    {
+        if (!ENV_DEV) {
+            \QTTX::$response->setStatusCode(404);
+            return false;
+        }
+
+        $model = new ParsePrivilegeYml();
+
+        return $this->runModel($model);
+    }
+
+    /**
+     * 获取主菜单数据
+     * @return array
+     */
+    public function actionMainMenu()
+    {
+        $model = new MainMenu([
+            'external' => $this->ext_rabc_single(),
+        ]);
+
+        return $this->runModel($model);
+    }
+
+    /**
+     * 获取用户所有权限的key,前端主要依赖这些值判定权限
+     */
+    public function actionPrivilegeKeys()
+    {
+        $model = new PrivilegeKeys([
+            'external' => $this->ext_rabc_single(),
+        ]);
+
+        return $this->runModel($model);
+    }
+
 
     /**
      * 获取权限的级联数据树

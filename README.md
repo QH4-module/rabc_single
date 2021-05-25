@@ -6,6 +6,21 @@ QH4框架扩展模块-权限管理模块-简单版本
 composer require qh4module/city
 ```
 
+### 关于解析YML文件
+
+该方法依赖于 `yaml` 扩展，最简单的安装方式
+```
+pecl install ymal
+```
+也可以使用其它方式编译安装，具体安装方式因个人环境而异。
+
+在模块的 `test` 目录提供了一份示例
+
+可以调用 `actionParseYml` 方法来解析文件，根据你自己的 controller 引用方式，可能需要手动传入可用的 Token
+
+yml文件必须放在 `libs` 目录下，名称为 `privilege.yml`
+
+
 #### 功能
 这个是简单版本的权限管理模块,只有3层模型,包括用户、角色、权限。
 
@@ -32,6 +47,54 @@ composer require qh4module/city
 
 
 ### api列表
+```php
+/**
+ * 解析权限 yml 文件
+ * 文件需要放在 lib 目录下
+ * @return array|mixed
+ */
+public function actionParseYml()
+{
+    if (!ENV_DEV) {
+        \QTTX::$response->setStatusCode(404);
+        return false;
+    }
+
+    $model = new ParsePrivilegeYml();
+
+    return $this->runModel($model);
+}
+```
+
+```php
+/**
+ * 获取主菜单数据
+ * @return array
+ */
+public function actionMainMenu()
+{
+    $model = new MainMenu([
+        'external' => $this->ext_rabc_single(),
+    ]);
+
+    return $this->runModel($model);
+}
+```
+
+```php
+/**
+ * 获取用户所有权限的key,前端主要依赖这些值判定权限
+ */
+public function actionPrivilegeKeys()
+{
+    $model = new PrivilegeKeys([
+        'external' => $this->ext_rabc_single(),
+    ]);
+
+    return $this->runModel($model);
+}
+```
+
 ```php
 /**
  * 获取权限的级联数据树
@@ -262,4 +325,25 @@ public static function getUserRelationAllRoles($user_id = null, ExtRabcSingle $e
  * @return array
  */
 public static function getRoleAllChildren($role_id, $map = false, ExtRabcSingle $external = null, $db = null)
+```
+
+```php
+/**
+ * 获取用户关联的权限 key_path
+ * @param string $user_id
+ * @param ExtRabcSingle|null $external
+ * @param DbModel $db
+ * @return array
+ */
+public static function getUserRelatedPrivKeys($user_id = null, ExtRabcSingle $external = null, $db = null)
+{
+    if (empty($user_id)) $user_id = TokenFilter::getPayload('user_id');
+    if (is_null($external)) $external = new ExtRabcSingle();
+    if (is_null($db)) $db = $external->getDb();
+    $role_ids = self::getUserRelatedRoles($user_id, false, $external, $db);
+    if (empty($role_ids)) return [];
+    $result = self::getRoleRelatedPrivileges($role_ids, ['key_path' => null,], $external, $db);
+    if (empty($result)) return [];
+    return array_column($result, 'key_path');
+}
 ```

@@ -1,0 +1,140 @@
+- name: 首页
+  key: home
+  type: 1
+  level: 1
+  path: /
+  icon: home
+- name: QHGC
+  key: qhgc
+  type: 1
+  level: 1
+  path: /qhgc
+  icon: code
+  children:
+    - name: ActiveRecord
+      key: activerecord
+      type: 1
+      level: 2
+      path: /qhgc/activerecord
+    - name: Model
+      key: gemodel
+      type: 1
+      level: 2
+      path: /qhgc/gemodel
+    - name: CURD
+      key: curd
+      type: 1
+      level: 2
+      path: /qhgc/curd
+- name: 用户权限
+  key: rabc
+  type: 1
+  level: 1
+  path: /rabc_single
+  icon: SafetyCertificate
+  children:
+    - name: 用户管理
+      key: user
+      type: 1
+      level: 2
+      path: /rabc_single/user/list
+      children:
+        - name: 用户列表
+          key: list
+          type: 2
+          level: 3
+        - name: 用户详情
+          key: detail
+          type: 2
+          level: 3
+        - name: 新增用户
+          key: create
+          type: 2
+          level: 3
+        - name: 更新用户
+          key: update
+          type: 2
+          level: 3
+        - name: 删除用户
+          key: delete
+          type: 2
+          level: 3
+    - name: 角色管理
+      key: role
+      type: 1
+      level: 2
+      path: /rabc_single/role/list
+      children:
+        - name: 角色列表
+          key: list
+          type: 2
+          level: 3
+        - name: 角色详情
+          key: detail
+          type: 2
+          level: 3
+        - name: 新增角色
+          key: create
+          type: 2
+          level: 3
+        - name: 编辑角色
+          key: update
+          type: 2
+          level: 3
+        - name: 删除角色
+          key: delete
+          type: 2
+          level: 3
+    - name: 权限资源管理
+      key: privilege
+      type: 1
+      level: 2
+      path: /rabc_single/privilege/list
+      children:
+        - name: 权限资源列表
+          key: list
+          type: 2
+          level: 3
+        - name: 权限资源详情
+          key: detail
+          type: 2
+          level: 3
+- name: 系统设置
+  key: setting
+  type: 1
+  level: 1
+  path: /setting
+  icon: setting
+  children:
+    - name: 设置列表
+      key: list
+      type: 2
+      level: 2
+      path: /setting/list
+    - name: 新增设置
+      key: create
+      type: 2
+      level: 2
+      path: /setting/create
+    - name: 更新设置
+      key: update
+      type: 2
+      level: 2
+      path: /setting/update
+    - name: 设置详情
+      key: detail
+      type: 2
+      level: 2
+      path: /setting/detail
+- name: 个人中心
+  key: person
+  type: 1
+  level: 1
+  path: /person
+  icon: user
+  children:
+    - name: 个人设置
+      key: setting
+      type: 1
+      level: 2
+      path: /person/setting/index
