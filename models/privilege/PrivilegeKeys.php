@@ -41,6 +41,7 @@ class PrivilegeKeys extends ServiceModel
 
         if (!HpRabcSingle::is_administrator($user_id, $this->external)) {
             $priv_ids = HpRabcSingle::getUserRelatedPrivileges($user_id, $this->external);
+            if(empty($priv_ids)) return [];
             $sql->whereIn('id', $priv_ids);
         }
 

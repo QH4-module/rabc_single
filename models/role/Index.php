@@ -66,7 +66,11 @@ class Index extends RoleModel
         // 非管理员只显示自己相关角色
         if (!HpRabcSingle::is_administrator($user_id, $this->external)) {
             list($role_ids, $child_ids) = HpRabcSingle::getUserRelationAllRoles($user_id, $this->external);
-            $sql->whereIn('id', array_merge($role_ids, $child_ids));
+            $role_ids = array_merge($role_ids, $child_ids);
+            if (empty($role_ids)) {
+                return array('total' => 0, 'list' => [], 'page' => 1, 'limit' => 10);
+            }
+            $sql->whereIn('id', $role_ids);
         }
 
         // 不展示固定的
